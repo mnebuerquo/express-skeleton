@@ -1,0 +1,5 @@
+{
+	"express_session": {
+		"secret": "this is a secret"
+	}
+}
