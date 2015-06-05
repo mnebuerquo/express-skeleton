@@ -23,7 +23,7 @@ dirs.forEach(function(dirname) {
 		console.log( colors.red('Warning!!! ')+colors.yellow('Using ENV='+env+' but could not read directory '+__dirname+'/'+dirname+'!'));
 		return;
 	}
-	var files = fs.readdirSync(__dirname + '/' + dirname)
+	var files = fs.readdirSync(__dirname + '/' + dirname);
 	if(!files){
 		return;
 	}
