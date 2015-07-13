@@ -70,12 +70,12 @@ Each middleware loader exports a function which is called by the `index.js` when
 The `views` directory has a different structure. It contains both layouts and partials. Each view in its top level can referenceany number of partials, and is rendered inside a layout.
 
 ```
-|-- views
-    |-- index.hbs
-    |-- layouts
-    |   |-- single.hbs
-    |-- partials
-        |-- head.hbs
++-- views
+	+-- index.hbs
+	+-- layouts
+		+-- single.hbs
+	+-- partials
+		+-- head.hbs
 ```
 
 In this example, rendering `index.hbs` will use the layout `single.hbs`, which includes the partial `head.hbs`.
