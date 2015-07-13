@@ -32,7 +32,7 @@ your app.
 
 Each directory in `config` should named for an execution environment
 with the exception of `default`. The execution environment is selected
-by the environment variable `NODE\_ENV` when the app starts. So when
+by the environment variable `NODE_ENV` when the app starts. So when
 running in `development`, the app will load configuration from the
 `config/development` directory.
 
@@ -117,7 +117,7 @@ command:
 NODE_ENV=development node app.js
 ```
 
-This command sets `NODE\_ENV` to choose between production and
+This command sets the variable NODE_ENV to choose between production and
 development. See the Configuration section above.
 
 ## TODO
