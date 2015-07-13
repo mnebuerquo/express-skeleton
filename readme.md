@@ -73,9 +73,9 @@ The `views` directory has a different structure. It contains both layouts and pa
 +-- views
 	+-- index.hbs
 	+-- layouts
-		+-- single.hbs
+	|	+-- single.hbs
 	+-- partials
-		+-- head.hbs
+	|	+-- head.hbs
 ```
 
 In this example, rendering `index.hbs` will use the layout `single.hbs`, which includes the partial `head.hbs`.
