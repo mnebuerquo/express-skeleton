@@ -28,6 +28,9 @@ dirs.forEach(function(dirname) {
 		return;
 	}
 	files.forEach(function(filename) {
+		//TODO: regex for matching file names
+		// We probably don't want names starting with .
+		// We do want both json and js files
 		if (filename.indexOf('.json') !== -1) {
 			var name = filename.substr(0, filename.indexOf('.json'));
 			var conf = require(__dirname + '/' + dirname + '/' + name);
