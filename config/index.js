@@ -13,6 +13,7 @@ default config.
 var extend = require('xtend');
 var env = process.env.NODE_ENV || 'development';
 var fs = require('fs');
+var path = require('path');
 var colors = require('colors/safe');
 var config = {};
 
@@ -31,8 +32,9 @@ dirs.forEach(function(dirname) {
 		//TODO: regex for matching file names
 		// We probably don't want names starting with .
 		// We do want both json and js files
-		if (filename.indexOf('.json') !== -1) {
-			var name = filename.substr(0, filename.indexOf('.json'));
+		var ext = path.extname(filename);
+		var name = path.basename(filename,ext);
+		if( '.js'===ext || '.json'===ext){
 			var conf = require(__dirname + '/' + dirname + '/' + name);
 			config = extend(config, conf);
 		}
