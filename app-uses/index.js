@@ -18,14 +18,15 @@ var moduleNames = [];
 var useFuncs = [];
 
 fs.readdirSync(__dirname).forEach(function(filename) {
-	// We probably don't want names starting with .
+	// We don't want names starting with .
 	// We want to limit it to names ending with .js
 	var ext = path.extname(filename);
 	var name = path.basename(filename,ext);
-	if( filename !== 'index.js' && '.js'===ext ){
-		if(0>=moduleNames.indexOf(name)){
-			moduleNames.push(name);
-		}
+	if( filename !== 'index.js' && 
+		'.js'===ext && 
+		'.' !== filename.charAt(0) &&
+		0>=moduleNames.indexOf(name) ){
+		moduleNames.push(name);
 	}
 });
 
@@ -35,10 +36,9 @@ moduleNames.forEach(function(name){
 });
 
 function useAll(app, config) {
-	for (var i = 0; i < useFuncs.length; i++) {
-		var func = useFuncs[i];
+	useFuncs.forEach(function(func){
 		func(app, config);
-	}
+	});
 }
 
 module.exports = useAll;
