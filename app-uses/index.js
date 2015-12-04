@@ -30,12 +30,13 @@ fs.readdirSync(__dirname).forEach(function(filename) {
 	}
 });
 
-moduleNames.forEach(function(name){
-	var func = require('./' + name);
-	useFuncs.push(func);
-});
-
 function useAll(app, config) {
+	// require each module
+	moduleNames.forEach(function(name){
+		var func = require('./' + name);
+		useFuncs.push(func);
+	});
+	// execute each function to initialize and use the module
 	useFuncs.forEach(function(func){
 		func(app, config);
 	});
