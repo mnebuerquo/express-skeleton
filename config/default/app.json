@@ -1,6 +1,7 @@
 {
 	"app": {
 		"port": 3000,
-		"hostname": "localhost:3000"
+		"hostname": "localhost:3000",
+		"favicon": "public/favicon.ico"
 	}
 }
