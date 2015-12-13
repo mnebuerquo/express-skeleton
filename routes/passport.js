@@ -14,6 +14,9 @@ module.exports = function(app) {
 	app.get('/auth/logout', function(req, res) {
 		// delete cookie, session
 		// redirect to home?
+		req.logout();
+		req.session = null;
+		res.redirect('/');
 	});
 
 };

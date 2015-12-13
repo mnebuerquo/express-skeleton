@@ -22,7 +22,7 @@ function use(app, config) {
 		next();
 	});
 
-	app.use(flash());//requires sessions
+	app.use(flash({locals: 'flash'}));//requires sessions
 }
 
 module.exports = use;

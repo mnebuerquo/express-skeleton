@@ -1,5 +1,5 @@
 {
 	"db":{
-		"url":"mongodb://localhost/express-skeleton
+		"url":"mongodb://localhost/express-skeleton"
 	}
 }

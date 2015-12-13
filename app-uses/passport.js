@@ -20,12 +20,6 @@ function use(app,config) {
 		});
 	});
 
-	app.use(function logAuthState(req,res,next){
-		var state = (req.isAuthenticated && req.isAuthenticated());
-		console.log(req.url+' login state: '+state);
-		next();
-	});
-
 	// ensure logged in unless in the /auth paths
 	requireLogin = ensure.ensureLoggedIn('/auth');
 	requireLogin.unless = unless;
@@ -33,7 +27,8 @@ function use(app,config) {
 
 	// ensure logged out unless not in the /auth paths
 	requireLogout = ensure.ensureLoggedOut('/');
-	app.use('/auth',requireLogout);
+	requireLogout.unless = unless;
+	app.use('/auth',requireLogout.unless({'path':'/auth/logout'}));
 }
 
 

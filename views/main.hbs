@@ -1,2 +1,16 @@
-You are looking at /views/index.hbs
+<h1>
 Hello Express!!!
+</h1>
+
+<div>
+You are looking at /views/main.hbs
+</div>
+
+<div>
+{{#if email }}
+	You are logged in as {{email}}.
+	<div><a href="auth/logout">Log out</a></div>
+{{else}}
+	You are not logged in.
+{{/if}}
+</div>

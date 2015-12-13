@@ -8,16 +8,15 @@ function use(app,config) {
 			passReqToCallback: true,
 			usernameField: 'email',
 			passwordField: 'password',
-			session: true
 		},
 		function handleLocalLogin(req, email, password, done) {
 			User.findOne({ 'local.email': email}, function(err, user) {
 				if (err) { return done(err); }
-				if (!user) {
-					return done(null, false, req.flash('login', 'Incorrect flurb.'));
-				}
-				if (!user.validPassword(password)) {
-					return done(null, false, req.flash('login', 'Incorrect blorg.'));
+				if (!user || !user.validPassword(password)) {
+					var error = new Error('Incorrect email or password.');
+					error.name = 'Login error';
+					error.status = 401;
+					return done(null, false, error);
 				}
 				return done(null, user);
 			});
@@ -28,7 +27,6 @@ function use(app,config) {
 			passReqToCallback : true,
 			usernameField : 'email',
 			passwordField : 'password',
-			session: true
 		},
 		function handleLocalCreateUser(req, email, password, done) {
 
@@ -41,7 +39,10 @@ function use(app,config) {
 
 				// check to see if theres already a user with that email
 				if (user) {
-					return done(null, false, req.flash('signup', 'That email is already taken.'));
+					var error = new Error('That email is already taken.');
+					error.name = 'Signup error';
+					error.status=409;//conflict
+					return done(null, false, error);
 				} else {
 
 					// if there is no user with that email
@@ -55,7 +56,7 @@ function use(app,config) {
 					// save the user
 					newUser.save(function(err) {
 						if (err)
-							throw err;
+							throw err;//TODO: Shouldn't this return done(err) instead?
 						return done(null, newUser);
 					});
 				}
