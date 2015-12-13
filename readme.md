@@ -1,10 +1,12 @@
 # Skeleton Express App
 
-# Installation
+# About 
 
 This is not an actual app, but a template to get started with express.
-This project is an example of an Express app, and uses several important
-concepts from Express.
+This project is an example of an Express app, and uses several features
+of Express 4.x such as routers. This app also implements logins with
+[Passport.js](http://passportjs.org/). These can be extended to allow
+Facebook, Google, Twitter, and other login methods.
 
 I intended it to be a starting template, which can be cloned/forked and
 then extended into an actual project. Ideally, this will implement some
