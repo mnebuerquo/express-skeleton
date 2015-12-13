@@ -4,13 +4,7 @@ Export a function to initialize all the app.use calls
 var fs = require('fs');
 var path = require('path');
 
-var sequence = [
-	'common',
-	'session',
-	'passport',
-	'passport-local',
-	'passport-bearer',
-];
+var sequence = require('./use-order');
 
 function loadNames(){
 	var names = [];
