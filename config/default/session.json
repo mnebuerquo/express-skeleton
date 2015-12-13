@@ -1,0 +1,6 @@
+{
+	"session":{
+		"secret":"asofeaiogbnaoigaselfna",
+		"maxAge": "1w"
+	}
+}

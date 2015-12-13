@@ -6,11 +6,16 @@ var app = require('express')();
 
 var config = require('./config');
 
+var mongoose = require('mongoose');
+mongoose.connect(config.db.url);
+
 // load middleware
 require('./app-uses')(app,config);
 
 // set up routes
-require('./routes')(app);
+require('./routes')(app,config);
+// set up api routes
+require('./api')(app,config);
 
 // once it's all loaded, start doing stuff
 app.listen(config.app.port);

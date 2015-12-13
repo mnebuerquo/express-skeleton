@@ -1,0 +1,7 @@
+[
+	"common",
+	"session",
+	"passport",
+	"passport-local",
+	"passport-bearer"
+]
