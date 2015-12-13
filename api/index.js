@@ -7,6 +7,7 @@ var tokens; // global to use inside callbacks
 var passport = require('passport');
 var unless = require('express-unless');
 
+// Middleware
 function ensureAuthenticated(req,res,next){
 	if( req.isAuthenticated() ){
 		return next();
@@ -23,6 +24,7 @@ function ensureAuthenticated(req,res,next){
 	}
 }
 
+// Middleware error handler for json response
 function handleError(err,req,res,next){
 	var output = {
 		error: {
@@ -35,6 +37,7 @@ function handleError(err,req,res,next){
 	res.status(statusCode).json(output);
 }
 
+// Callback for passport.authenticate routes
 function onApiLogin(req, res) {
 	// req.user is the user record
 	var response = {};
@@ -99,16 +102,13 @@ module.exports = function(app,config) {
 			] );
 
 	//and now the auth routes
-	//TODO: load additional auth routes from a dir named auth
-	auth.post('/local/login',
-		passport.authenticate('local-login', apioptions ),
-		onApiLogin
-	);
-
-    auth.post('/local/signup', 
-		passport.authenticate('local-signup', apioptions ),
-		onApiLogin
-	);
+	fs.readdirSync(__dirname+'/auth').forEach(function(filename) {
+		var ext = path.extname(filename);
+		var name = path.basename(filename,ext);
+		if( filename !== 'index.js' && '.js'===ext ){
+			require('./auth/' + name)(auth,config,onApiLogin,apioptions);
+		}
+	});
 
 	app.use('/api/auth',auth);
 	app.use('/api',api);
