@@ -13,11 +13,12 @@ then extended into an actual project. Ideally, this will implement some
 login and user management features and save us all some tedious work in
 future projects.
 
-## Dependencies
+# Dependencies
 
 * node.js
+* mongodb
 
-## Tools Setup
+# Tools Setup
 
 After cloning this repo, run the following command in the same directory
 as the repo to get npm and grunt set up. If jshint runs, then you have
@@ -28,7 +29,7 @@ everything installed and working.
 3. `npm install grunt`
 4. `grunt jshint`
 
-## Project Setup
+# Project Setup
 
 To create an express app, you will need Configuration, Routes,
 Middleware, and Views. Each of these is added by placing files in the
@@ -37,7 +38,7 @@ correct locations with certain structures in them.
 Additionally, you can use the `api` directory to add routes for a REST
 api.
 
-### Configuration
+## Configuration
 
 Add json files in the `config` directory to set configuration data for
 your app.
@@ -52,7 +53,7 @@ The `config/default` directory is loaded for all environments, and then
 the environment specific configuration overrides those set in
 `config/default`. 
 
-### Routes
+## Routes
 
 To set up a route, add a file in the `routes` directory with the
 following structure:
@@ -78,7 +79,7 @@ part of its setup sequence.
 The `api` directory works the same way as the `routes` directory. Just
 follow the same pattern with the exported function.
 
-### Middleware
+## Middleware
 
 To include middleware in the app, add files to the `app-uses` directory.
 Each will follow this pattern:
@@ -123,7 +124,7 @@ file called `use-order.json` containing a single array of module names.
 The `index.js` will load and use all the modules listed in the array
 first, then load any other modules in unspecified order.
 
-### Views
+## Views
 
 The `views` directory has a different structure. It contains both
 layouts and partials. Each view in its top level can referenceany number
@@ -145,12 +146,12 @@ This project uses handlebars for its templates, but you can use any engine you
 like. Just add the middleware for it in the `app-uses` directory. See
 `app-uses/handlebars.js` as an example.
 
-### Models
+## Models
 
 This project uses MongoDB with Mongoose models. This project provides a
 user model for handling logins.
 
-## Running the Project
+# Running the Project
 
 To run the project and see the express app in action, use the following
 command: 
