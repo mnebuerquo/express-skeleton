@@ -11,7 +11,7 @@ function use(app,config) {
 		return;// skip use functions
 	}
 
-	passport.use(new FacebookTokenStrategy({
+	passport.use('facebook-token',new FacebookTokenStrategy({
 		clientID: fbID,
 		clientSecret: fbSecret, 
 	}, function(accessToken, refreshToken, profile, done) {
