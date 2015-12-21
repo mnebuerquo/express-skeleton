@@ -6,7 +6,7 @@ function use(app,config) {
 
 	passport.use('local-login', new LocalStrategy({
 			passReqToCallback: true,
-			usernameField: 'email',
+			usernameField: 'username',
 			passwordField: 'password',
 		},
 		function handleLocalLogin(req, email, password, done) {
@@ -25,7 +25,7 @@ function use(app,config) {
 
 	passport.use('local-signup', new LocalStrategy({
 			passReqToCallback : true,
-			usernameField : 'email',
+			usernameField : 'username',
 			passwordField : 'password',
 		},
 		function handleLocalCreateUser(req, email, password, done) {
