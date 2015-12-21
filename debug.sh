@@ -1,3 +1,13 @@
 #!/bin/sh
 
-NODE_ENV=development node-debug --debug-brk=0 -p 7000 app.js 
+if [ $1 = "no-debug" ]; then
+	COMMAND="node"
+	OPTION=""
+else
+	COMMAND="node-debug"
+	OPTION="--debug-brk=0 -p 7000"
+fi
+
+CMD="NODE_ENV=development $COMMAND $OPTION app.js"
+echo $CMD
+eval $CMD
