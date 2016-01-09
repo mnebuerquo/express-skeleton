@@ -73,7 +73,6 @@ module.exports = function(app,config) {
 			cors(),
 			passport.authenticate('token-bearer', { session: false }),
 			ensureAuthenticated,
-			handleError
 			] );
 
 	// api routes other than auth are loaded automatically
@@ -87,18 +86,23 @@ module.exports = function(app,config) {
 		}
 	});
 
+	// error handling middleware last
+	api.use( [
+			handleError
+			] );
+
 	// auth routes have a separate router to enable different middleware
 	var auth = express.Router();
 	// auth options
 	var apioptions = { 
 		failureFlash : false, 
 		session: false,
+		failWithError: true, // passport normally wants to send its own 401, but it's not json
 	};
 
 	// they require different middleware
 	auth.use( [
 			cors(),
-			handleError
 			] );
 
 	//and now the auth routes
@@ -109,6 +113,11 @@ module.exports = function(app,config) {
 			require('./auth/' + name)(auth,config,onApiLogin,apioptions);
 		}
 	});
+
+	// error handling middleware last
+	auth.use( [
+			handleError
+			] );
 
 	app.use('/api/auth',auth);
 	app.use('/api',api);

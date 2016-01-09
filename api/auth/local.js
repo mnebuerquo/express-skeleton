@@ -1,7 +1,5 @@
 var passport = require('passport');
 
-
-
 module.exports = function(app,config,onApiLogin,apioptions ) { 
 
 	app.post('/local/login',
