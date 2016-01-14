@@ -33,6 +33,9 @@ function handleError(err,req,res,next){
 			text: err.toString()
 		}
 	};
+	if('TokenExpiredError'===err.name){
+		err.status = 401;
+	}
 	var statusCode = err.status || 500;
 	res.status(statusCode).json(output);
 }

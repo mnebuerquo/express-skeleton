@@ -42,7 +42,7 @@ function use(app,config) {
 					var error = new Error('That email is already taken.');
 					error.name = 'Signup error';
 					error.status=409;//conflict
-					return done(null, false, error);
+					return done(error, false, error);
 				} else {
 
 					// if there is no user with that email
@@ -52,6 +52,7 @@ function use(app,config) {
 					// set the user's local credentials
 					newUser.local.email    = email;
 					newUser.local.password = newUser.generateHash(password);
+					newUser.local.birthdate= req.body.birthdate || 'unknown';
 
 					// save the user
 					newUser.save(function(err) {
