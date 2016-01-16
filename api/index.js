@@ -33,6 +33,9 @@ function handleError(err,req,res,next){
 			text: err.toString()
 		}
 	};
+	if('TokenExpiredError'===err.name){
+		err.status = 401;
+	}
 	var statusCode = err.status || 500;
 	res.status(statusCode).json(output);
 }
@@ -68,12 +71,18 @@ module.exports = function(app,config) {
 	// api is a router for all api routes (except the api/auth routes)
 	var api = express.Router();
 
+	// api auth options
+	var apioptions = { 
+		failureFlash : false, 
+		session: false,
+		failWithError: true, // passport normally wants to send its own 401, but it's not json
+	};
+
 	// api routes require specific middleware
 	api.use( [
 			cors(),
-			passport.authenticate('token-bearer', { session: false }),
+			passport.authenticate('token-bearer', apioptions ),
 			ensureAuthenticated,
-			handleError
 			] );
 
 	// api routes other than auth are loaded automatically
@@ -87,18 +96,17 @@ module.exports = function(app,config) {
 		}
 	});
 
+	// error handling middleware last
+	api.use( [
+			handleError
+			] );
+
 	// auth routes have a separate router to enable different middleware
 	var auth = express.Router();
-	// auth options
-	var apioptions = { 
-		failureFlash : false, 
-		session: false,
-	};
 
 	// they require different middleware
 	auth.use( [
 			cors(),
-			handleError
 			] );
 
 	//and now the auth routes
@@ -109,6 +117,11 @@ module.exports = function(app,config) {
 			require('./auth/' + name)(auth,config,onApiLogin,apioptions);
 		}
 	});
+
+	// error handling middleware last
+	auth.use( [
+			handleError
+			] );
 
 	app.use('/api/auth',auth);
 	app.use('/api',api);

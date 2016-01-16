@@ -31,7 +31,11 @@ module.exports = function(app,config) {
 	});
 
 	app.get('/user', function(req,res){
-		return res.status(200).json(req.user);
+		var user = req.user;
+		if( user.local && user.local.password ){
+			user.local.password='x';
+		}
+		return res.status(200).json(user);
 	});
 
 };

@@ -6,7 +6,7 @@ function use(app,config) {
 
 	passport.use('local-login', new LocalStrategy({
 			passReqToCallback: true,
-			usernameField: 'email',
+			usernameField: 'username',
 			passwordField: 'password',
 		},
 		function handleLocalLogin(req, email, password, done) {
@@ -25,7 +25,7 @@ function use(app,config) {
 
 	passport.use('local-signup', new LocalStrategy({
 			passReqToCallback : true,
-			usernameField : 'email',
+			usernameField : 'username',
 			passwordField : 'password',
 		},
 		function handleLocalCreateUser(req, email, password, done) {
@@ -42,7 +42,7 @@ function use(app,config) {
 					var error = new Error('That email is already taken.');
 					error.name = 'Signup error';
 					error.status=409;//conflict
-					return done(null, false, error);
+					return done(error, false, error);
 				} else {
 
 					// if there is no user with that email
@@ -52,11 +52,13 @@ function use(app,config) {
 					// set the user's local credentials
 					newUser.local.email    = email;
 					newUser.local.password = newUser.generateHash(password);
+					newUser.local.birthdate= req.body.birthdate || null;
+					//TODO: is birthdate required? Is there a minimum age?
 
 					// save the user
 					newUser.save(function(err) {
 						if (err)
-							throw err;//TODO: Shouldn't this return done(err) instead?
+							return done(err);
 						return done(null, newUser);
 					});
 				}
