@@ -52,12 +52,13 @@ function use(app,config) {
 					// set the user's local credentials
 					newUser.local.email    = email;
 					newUser.local.password = newUser.generateHash(password);
-					newUser.local.birthdate= req.body.birthdate || 'unknown';
+					newUser.local.birthdate= req.body.birthdate || null;
+					//TODO: is birthdate required? Is there a minimum age?
 
 					// save the user
 					newUser.save(function(err) {
 						if (err)
-							throw err;//TODO: Shouldn't this return done(err) instead?
+							return done(err);
 						return done(null, newUser);
 					});
 				}
