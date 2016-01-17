@@ -1,5 +1,6 @@
 var passport = require('passport');
 var FacebookTokenStrategy = require('passport-facebook-token');
+var User = require('../models/user');
 
 function use(app,config) {
 
@@ -14,15 +15,16 @@ function use(app,config) {
 	passport.use('facebook-token',new FacebookTokenStrategy({
 		clientID: fbID,
 		clientSecret: fbSecret, 
+		accessTokenField: 'token',
 	}, function(accessToken, refreshToken, profile, done) {
 		// find the user in the database based on their facebook id
 		User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
 
 			// if there is an error, stop everything and return that
 			// ie an error connecting to the database
-			if (err)
+			if (err){  
 				return done(err);
-
+			}
 			// if the user is found, then log them in
 			if (user) {
 				return done(null, user); // user found, return that user
@@ -34,7 +36,8 @@ function use(app,config) {
 				// set the users facebook id                   
 				newUser.facebook.id    = profile.id;
 				// we will save the token that facebook provides to the user
-				newUser.facebook.token = token; 
+				// this is for making facebook api calls for that user
+				newUser.facebook.accessToken = accessToken; 
 				// look at the passport user profile to see how names are returned
 				newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
 				// facebook can return multiple emails so we'll take the first
@@ -42,8 +45,7 @@ function use(app,config) {
 
 				// save our user to the database
 				newUser.save(function(err) {
-					if (err)
-						throw err;
+					if (err) { return done(err); }
 
 					// if successful, return the new user
 					return done(null, newUser);
