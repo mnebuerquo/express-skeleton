@@ -104,18 +104,21 @@ module.exports = function(app,config) {
 			ensureAuthenticated,
 			] );
 
-	// api routes other than auth are loaded automatically
-	fs.readdirSync(__dirname).forEach(function(filename) {
-		// We probably don't want names starting with .
-		// We want the name to end with .js
-		var ext = path.extname(filename);
-		var name = path.basename(filename,ext);
-		if( filename !== 'index.js' ){
-			var pathRoute = express.Router();
-			require('./' + name)(pathRoute,config);
-			api.use('/'+pathRoute,pathRoute);
-		}
-	});
+	// load all api routes
+	recursiveRoute(__dirname+'/routes/',api,config);
+
+   /* // api routes other than auth are loaded automatically*/
+	//fs.readdirSync(__dirname).forEach(function(filename) {
+		//// We probably don't want names starting with .
+		//// We want the name to end with .js
+		//var ext = path.extname(filename);
+		//var name = path.basename(filename,ext);
+		//if( filename !== 'index.js' ){
+			//var pathRoute = express.Router();
+			//require('./' + name)(pathRoute,config);
+			//api.use('/'+pathRoute,pathRoute);
+		//}
+	/*});*/
 
 	// error handling middleware last
 	api.use( [
