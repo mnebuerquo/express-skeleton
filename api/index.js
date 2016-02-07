@@ -63,6 +63,25 @@ function onApiLogin(req, res) {
 	}
 }
 
+// recurse and use directories
+function recursiveRoute(dir, route, config){
+	fs.readdirSync(dir).forEach(function(filename) {
+		var fullname = dir+'/'+filename;
+		var ext = path.extname(filename);
+		var name = path.basename(filename,ext);
+		var pathRoute = express.Router();
+		console.log('Processing '+name);
+		if(fs.lstatSync(fullname).isDirectory()){
+			//recurse
+			recursiveRoute(fullname,pathRoute,config);
+		} else {
+			//require filename
+			require('./' + name)(pathRoute,config);
+		}
+		api.use('/'+name,pathRoute);
+	}
+}
+
 module.exports = function(app,config) {
 
 	// this is filling in a global to store the token generator
@@ -91,8 +110,10 @@ module.exports = function(app,config) {
 		// We want the name to end with .js
 		var ext = path.extname(filename);
 		var name = path.basename(filename,ext);
-		if( filename !== 'index.js' && '.js'===ext ){
-			require('./' + name)(api,config);
+		if( filename !== 'index.js' ){
+			var pathRoute = express.Router();
+			require('./' + name)(pathRoute,config);
+			api.use('/'+pathRoute,pathRoute);
 		}
 	});
 
