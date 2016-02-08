@@ -64,22 +64,23 @@ function onApiLogin(req, res) {
 }
 
 // recurse and use directories
-function recursiveRoute(dir, route, config){
+function recursiveRoute(dir, parentRoute, config){
 	fs.readdirSync(dir).forEach(function(filename) {
 		var fullname = dir+'/'+filename;
 		var ext = path.extname(filename);
 		var name = path.basename(filename,ext);
 		var pathRoute = express.Router();
-		console.log('Processing '+name);
+		console.log(dir+'/'+name);
+		//TODO: set base require dir at each level when requring
 		if(fs.lstatSync(fullname).isDirectory()){
 			//recurse
 			recursiveRoute(fullname,pathRoute,config);
 		} else {
 			//require filename
-			require('./' + name)(pathRoute,config);
+			require(dir+'/'+ name)(pathRoute,config);
 		}
-		api.use('/'+name,pathRoute);
-	}
+		parentRoute.use('/'+name,pathRoute);
+	});
 }
 
 module.exports = function(app,config) {
@@ -106,19 +107,6 @@ module.exports = function(app,config) {
 
 	// load all api routes
 	recursiveRoute(__dirname+'/routes/',api,config);
-
-   /* // api routes other than auth are loaded automatically*/
-	//fs.readdirSync(__dirname).forEach(function(filename) {
-		//// We probably don't want names starting with .
-		//// We want the name to end with .js
-		//var ext = path.extname(filename);
-		//var name = path.basename(filename,ext);
-		//if( filename !== 'index.js' ){
-			//var pathRoute = express.Router();
-			//require('./' + name)(pathRoute,config);
-			//api.use('/'+pathRoute,pathRoute);
-		//}
-	/*});*/
 
 	// error handling middleware last
 	api.use( [
