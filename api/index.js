@@ -77,7 +77,7 @@ function recursiveRoute(dir, parentRoute, config){
 			recursiveRoute(fullname,pathRoute,config);
 		} else {
 			//require filename
-			require(dir+'/'+ name)(pathRoute,config);
+			require(dir+'/'+ name)(pathRoute,config,dir);
 		}
 		parentRoute.use('/'+name,pathRoute);
 	});
@@ -106,7 +106,7 @@ module.exports = function(app,config) {
 			] );
 
 	// load all api routes
-	recursiveRoute(__dirname+'/routes/',api,config);
+	recursiveRoute(__dirname+'/routes',api,config);
 
 	// error handling middleware last
 	api.use( [
