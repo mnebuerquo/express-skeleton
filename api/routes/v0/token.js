@@ -1,4 +1,4 @@
-var tokensIssuer = require('../includes/token');
+var tokensIssuer = require('includes/token');
 var tokens; // global to use inside callbacks
 
 module.exports = function(app,config) {

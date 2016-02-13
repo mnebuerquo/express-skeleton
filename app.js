@@ -1,3 +1,8 @@
+// Set up a relative path for including app modules from deeply nested
+// directories such as api routes.
+// https://www.npmjs.com/package/app-module-path
+// https://gist.github.com/branneman/8048520
+require('app-module-path').addPath(__dirname);
 
 //set up app without generator
 //http://www.marcusoft.net/2014/02/mnb-express.html
