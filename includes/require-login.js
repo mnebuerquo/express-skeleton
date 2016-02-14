@@ -14,4 +14,5 @@ module.exports = function requireLogin(req, res, next){
 		};
 		res.status(401).json(output);
 	}
-}
+};
+
