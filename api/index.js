@@ -8,21 +8,6 @@ var passport = require('passport');
 var unless = require('express-unless');
 
 // Middleware
-function ensureAuthenticated(req,res,next){
-	if( req.isAuthenticated() ){
-		return next();
-	} else {
-		var output = {
-			error: {
-				name: 'Not Authenticated',
-				status: 401,
-				message: 'Valid authentication token required',
-				text: 'Not Authenticated',
-			}
-		};
-		res.status(401).json(output);
-	}
-}
 
 // Middleware error handler for json response
 function handleError(err,req,res,next){
@@ -98,11 +83,13 @@ module.exports = function(app,config) {
 		failWithError: true, // passport normally wants to send its own 401, but it's not json
 	};
 
-	// api routes require specific middleware
+	// API routes require specific middleware.
+	// ensureAuthenticated was once specified here, but now that is the
+	// responsibility of individual routes. Some routes may be open,
+	// some may require authentication.
 	api.use( [
 			cors(),
 			passport.authenticate('token-bearer', apioptions ),
-			ensureAuthenticated,
 			] );
 
 	// load all api routes

@@ -1,7 +1,10 @@
 var tokensIssuer = require('includes/token');
 var tokens; // global to use inside callbacks
+var requireLogin = require('includes/require-login');
 
 module.exports = function(app,config) {
+
+	app.use(requireLogin);
 
 	tokens = tokensIssuer(config);
 
@@ -30,7 +33,7 @@ module.exports = function(app,config) {
 		res.json(output);
 	});
 
-	app.get('/user', function(req,res){
+	app.get('/user', requireLogin, function(req,res){
 		var user = req.user;
 		if( user.local && user.local.password ){
 			user.local.password='x';
