@@ -4,10 +4,10 @@ var express = require('express');
 var cors = require('cors');
 var tokensIssuer = require('../includes/token');
 var tokens; // global to use inside callbacks
-var passport = require('passport');
 var unless = require('express-unless');
 
 // Middleware
+var bearerAuth = require('./middleware/bearer-auth');
 
 // Middleware error handler for json response
 function handleError(err,req,res,next){
@@ -36,7 +36,7 @@ function onApiLogin(req, res) {
 		var payload = { 
 			"userId": req.user._id, 
 			"timestamp": currentTime
-	   	};
+		};
 		response.access_token = tokens.issueToken(payload);
 		res.status(200).json(response);
 	} else {
@@ -76,20 +76,13 @@ module.exports = function(app,config) {
 	// api is a router for all api routes (except the api/auth routes)
 	var api = express.Router();
 
-	// api auth options
-	var apioptions = { 
-		failureFlash : false, 
-		session: false,
-		failWithError: true, // passport normally wants to send its own 401, but it's not json
-	};
-
 	// API routes require specific middleware.
 	// ensureAuthenticated was once specified here, but now that is the
 	// responsibility of individual routes. Some routes may be open,
 	// some may require authentication.
 	api.use( [
 			cors(),
-			passport.authenticate('token-bearer', apioptions ),
+			bearerAuth,
 			] );
 
 	// load all api routes
@@ -108,6 +101,12 @@ module.exports = function(app,config) {
 			cors(),
 			] );
 
+	// api auth options
+	var apioptions = { 
+		failureFlash : false, 
+		session: false,
+		failWithError: true, // passport normally wants to send its own 401, but it's not json
+	};
 	//and now the auth routes
 	fs.readdirSync(__dirname+'/auth').forEach(function(filename) {
 		var ext = path.extname(filename);
