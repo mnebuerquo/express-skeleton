@@ -1,14 +1,14 @@
 /*
-Config index
+   Config index
 
-Loads config from json files. 
+   Loads config from json files. 
 
-Uses directories named for environments:
-development, test, production
+   Uses directories named for environments:
+   development, test, production
 
-Config loaded from default directory first, then environment files override
-default config.
-*/
+   Config loaded from default directory first, then environment files override
+   default config.
+   */
 
 var extend = require('xtend');
 var env = process.env.NODE_ENV || 'development';
@@ -34,9 +34,14 @@ dirs.forEach(function(dirname) {
 		// We do want both json and js files
 		var ext = path.extname(filename);
 		var name = path.basename(filename,ext);
+		var requirePath = __dirname + '/' + dirname + '/' + name;
 		if( '.js'===ext || '.json'===ext){
-			var conf = require(__dirname + '/' + dirname + '/' + name);
-			config = extend(config, conf);
+			try {
+				var conf = require(requirePath);
+				config = extend(config, conf);
+			} catch(e) {
+				console.log(colors.red("Exception while loading file: ")+'['+requirePath+'] '+colors.red(e));
+			}
 		}
 	});
 });
