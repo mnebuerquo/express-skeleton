@@ -102,6 +102,7 @@ module.exports = function(app,config) {
 			] );
 
 	// api auth options
+	// TODO: move this to a shared location, same code is in middleware/bearer-auth.js
 	var apioptions = { 
 		failureFlash : false, 
 		session: false,

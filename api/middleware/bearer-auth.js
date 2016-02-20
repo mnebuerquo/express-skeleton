@@ -1,11 +1,5 @@
 var passport = require('passport');
-
-// api auth options
-var apioptions = { 
-	failureFlash : false, 
-	session: false,
-	failWithError: true, // passport normally wants to send its own 401, but it's not json
-};
+var apioptions = require('../../includes/passport-api-options');
 
 function bearerAuth(req,res,next) {
 
