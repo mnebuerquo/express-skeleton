@@ -5,6 +5,7 @@ var cors = require('cors');
 var tokensIssuer = require('../includes/token');
 var tokens; // global to use inside callbacks
 var unless = require('express-unless');
+var apioptions = require('../includes/passport-api-options');
 
 // Middleware
 var bearerAuth = require('./middleware/bearer-auth');
@@ -101,13 +102,6 @@ module.exports = function(app,config) {
 			cors(),
 			] );
 
-	// api auth options
-	// TODO: move this to a shared location, same code is in middleware/bearer-auth.js
-	var apioptions = { 
-		failureFlash : false, 
-		session: false,
-		failWithError: true, // passport normally wants to send its own 401, but it's not json
-	};
 	//and now the auth routes
 	fs.readdirSync(__dirname+'/auth').forEach(function(filename) {
 		var ext = path.extname(filename);
