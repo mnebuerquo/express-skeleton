@@ -14,11 +14,11 @@ var preferVersion = require('./middleware/prefer-version');
 // Middleware error handler for json response
 function handleError(err,req,res,next){
 	var output = {
-		error: {
+		errors: [ {
 			name: err.name,
 			message: err.message,
 			text: err.toString()
-		}
+		} ]
 	};
 	if('TokenExpiredError'===err.name){
 		err.status = 401;
