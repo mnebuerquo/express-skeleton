@@ -9,6 +9,7 @@ var apioptions = require('../includes/passport-api-options');
 
 // Middleware
 var bearerAuth = require('./middleware/bearer-auth');
+var preferVersion = require('./middleware/prefer-version');
 
 // Middleware error handler for json response
 function handleError(err,req,res,next){
@@ -83,6 +84,9 @@ module.exports = function(app,config) {
 	// some may require authentication.
 	api.use( [
 			cors(),
+			preferVersion( 
+				(config.api && config.api.currentVersion) || null 
+				),
 			bearerAuth,
 			] );
 

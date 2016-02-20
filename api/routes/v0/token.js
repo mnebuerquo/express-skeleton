@@ -4,10 +4,6 @@ var requireLogin = require('api/middleware/require-login');
 
 module.exports = function(app,config) {
 
-	// Use this middleware for all routes here
-	// This requires login for all routes in this module
-	//app.use(requireLogin);
-
 	// construct the tokens validator using the config
 	tokens = tokensIssuer(config);
 
