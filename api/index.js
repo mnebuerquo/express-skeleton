@@ -20,6 +20,7 @@ function handleError(err,req,res,next){
 		err.status = 401;
 	}
 	var error = err;
+	error.message = (error.message || error.error);
 	error.name = (error.name || "Error");
 	error.text = err.text || (err.name && err.message ? err.name+': '+err.message : '') || err.toString();
 	var output = { errors: [] };
