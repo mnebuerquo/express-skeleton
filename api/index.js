@@ -13,18 +13,14 @@ var preferVersion = require('./middleware/prefer-version');
 
 // Middleware error handler for json response
 function handleError(err,req,res,next){
-	var output = {
-		errors: [ {
-			name: err.name,
-			message: err.message,
-			text: err.toString()
-		} ]
-	};
 	if('TokenExpiredError'===err.name){
 		err.status = 401;
 	}
-	var statusCode = err.status || 500;
-	res.status(statusCode).json(output);
+	var error = err;
+	error.text = err.text || (err.name && err.message ? err.name+': '+err.message : '') || err.toString();
+	var output = { errors: [] };
+	output.errors.push(error);
+	res.status(err.status || 500).json(output);
 }
 
 // Callback for passport.authenticate routes
