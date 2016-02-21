@@ -15,12 +15,12 @@ var preferVersion = require('./middleware/prefer-version');
 function handleError(err,req,res,next){
 	if(typeof err !== 'object'){
 		err = { message: err };
-		name="Error";
 	}
 	if('TokenExpiredError'===err.name){
 		err.status = 401;
 	}
 	var error = err;
+	error.name = (error.name || "Error");
 	error.text = err.text || (err.name && err.message ? err.name+': '+err.message : '') || err.toString();
 	var output = { errors: [] };
 	output.errors.push(error);
