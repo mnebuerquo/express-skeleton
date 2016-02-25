@@ -10,6 +10,7 @@ var apioptions = require('../includes/passport-api-options');
 // Middleware
 var bearerAuth = require('./middleware/bearer-auth');
 var preferVersion = require('./middleware/prefer-version');
+var allowed = require('./middleware/allow-access');
 
 // Middleware error handler for json response
 function handleError(err,req,res,next){
@@ -89,6 +90,7 @@ module.exports = function(app,config) {
 				(config.api && config.api.currentVersion) || null 
 				),
 			bearerAuth,
+			allowed,
 			] );
 
 	// load all api routes

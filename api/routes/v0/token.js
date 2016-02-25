@@ -46,4 +46,8 @@ module.exports = function(app,config) {
 		return res.status(200).json(user);
 	});
 
+	app.get('/hello',function(req,res){
+		res.json({data: {message: 'Hello world!'}});
+	});
+
 };
